@@ -43,8 +43,8 @@ CallbackReturn RRBotSystemWithSensorHardware::on_init(const hardware_interface::
   hw_sensor_change_ = stod(info_.hardware_parameters["example_param_max_sensor_change"]);
   // END: This part here is for exemplary purposes - Please do not copy to your production code
 
-  hw_joint_states_.resize(info_.joints.size(), std::numeric_limits<double>::quiet_NaN());
-  hw_joint_commands_.resize(info_.joints.size(), std::numeric_limits<double>::quiet_NaN());
+  hw_joint_states_.resize(2, std::numeric_limits<double>::quiet_NaN());
+  hw_joint_commands_.resize(2, std::numeric_limits<double>::quiet_NaN());
   hw_sensor_states_.resize(
     info_.sensors[0].state_interfaces.size(), std::numeric_limits<double>::quiet_NaN());
 
@@ -122,18 +122,21 @@ std::vector<hardware_interface::StateInterface>
 RRBotSystemWithSensorHardware::export_state_interfaces()
 {
   std::vector<hardware_interface::StateInterface> state_interfaces;
-  for (uint i = 0; i < info_.joints.size(); i++)
-  {
-    state_interfaces.emplace_back(hardware_interface::StateInterface(
-      info_.joints[i].name, hardware_interface::HW_IF_POSITION, &hw_joint_states_[i]));
-  }
+  state_interfaces.emplace_back("joint1", "position", &hw_joint_states_[0]);
+  state_interfaces.emplace_back("joint2", "position", &hw_joint_states_[1]);
+
+  // for (uint i = 0; i < info_.joints.size(); i++)
+  // {
+  //   state_interfaces.emplace_back(hardware_interface::StateInterface(
+  //     info_.joints[i].name, hardware_interface::HW_IF_POSITION, &hw_joint_states_[i]));
+  // }
 
   // export sensor state interface
-  for (uint i = 0; i < info_.sensors[0].state_interfaces.size(); i++)
-  {
-    state_interfaces.emplace_back(hardware_interface::StateInterface(
-      info_.sensors[0].name, info_.sensors[0].state_interfaces[i].name, &hw_sensor_states_[i]));
-  }
+  // for (uint i = 0; i < info_.sensors[0].state_interfaces.size(); i++)
+  // {
+  //   state_interfaces.emplace_back(hardware_interface::StateInterface(
+  //     info_.sensors[0].name, info_.sensors[0].state_interfaces[i].name, &hw_sensor_states_[i]));
+  // }
 
   return state_interfaces;
 }
@@ -142,11 +145,14 @@ std::vector<hardware_interface::CommandInterface>
 RRBotSystemWithSensorHardware::export_command_interfaces()
 {
   std::vector<hardware_interface::CommandInterface> command_interfaces;
-  for (uint i = 0; i < info_.joints.size(); i++)
-  {
-    command_interfaces.emplace_back(hardware_interface::CommandInterface(
-      info_.joints[i].name, hardware_interface::HW_IF_POSITION, &hw_joint_commands_[i]));
-  }
+  command_interfaces.emplace_back("joint1", "position", &hw_joint_commands_[0]);
+  command_interfaces.emplace_back("joint2", "velocity", &hw_joint_commands_[1]);
+
+  // for (uint i = 0; i < info_.joints.size(); i++)
+  // {
+  //   command_interfaces.emplace_back(hardware_interface::CommandInterface(
+  //     info_.joints[i].name, hardware_interface::HW_IF_POSITION, &hw_joint_commands_[i]));
+  // }
 
   return command_interfaces;
 }
