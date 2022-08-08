@@ -58,6 +58,7 @@ CallbackReturn RRBotSystemWithSensorHardware::on_init(const hardware_interface::
         "Joint '%s' has %zu command interfaces found. 1 expected.", joint.name.c_str(),
         joint.command_interfaces.size());
       return CallbackReturn::ERROR;
+      break;
     }
 
     if (joint.command_interfaces[0].name != hardware_interface::HW_IF_POSITION)
@@ -67,6 +68,7 @@ CallbackReturn RRBotSystemWithSensorHardware::on_init(const hardware_interface::
         "Joint '%s' have %s command interfaces found. '%s' expected.", joint.name.c_str(),
         joint.command_interfaces[0].name.c_str(), hardware_interface::HW_IF_POSITION);
       return CallbackReturn::ERROR;
+      break;
     }
 
     if (joint.state_interfaces.size() != 1)
@@ -89,7 +91,6 @@ CallbackReturn RRBotSystemWithSensorHardware::on_init(const hardware_interface::
   }
 
   return CallbackReturn::SUCCESS;
-  break;
 }
 
 CallbackReturn RRBotSystemWithSensorHardware::on_configure(
