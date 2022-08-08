@@ -31,7 +31,7 @@ add_library(
 )
 target_include_directories(
   ${PROJECT_NAME}
-  PRIVATE
+  PUBLIC
   include
 )
 ament_target_dependencies(
@@ -60,7 +60,14 @@ install(
 )
 
 if(BUILD_TESTING)
+  find_package(ament_lint_auto REQUIRED)
   find_package(ament_cmake_gtest REQUIRED)
+
+  ament_lint_auto_find_test_dependencies()
+
+  ament_add_gtest(rrbot_syste_with_sensor_test test/rrbot_syste_with_sensor_test.cpp)
+  target_link_libraries(rrbot_syste_with_sensor_test ${PROJECT_NAME})
+
 endif()
 
 ## EXPORTS
